@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha"
   },
+  "type": "module",
   "keywords": [],
   "authors": [
     "Denis_Kosun@epam.com"
@@ -21,6 +22,5 @@
     "chai": "^5.1.1",
     "mocha": "^10.7.3",
     "mochawesome": "^7.1.3"
-  },
-  "type": "module"
+  }
 }
