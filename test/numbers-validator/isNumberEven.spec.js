@@ -38,4 +38,9 @@ describe('isNumberEven', function () {
 
   // Additional tests would follow for different test cases, such as testing if an odd number
   // returns false or if passing a non-number throws an error.
+  it('should return an error when is provided with a string', () => {
+    expect(function() {
+      validator.isNumberEven('4')
+    }).to.throw('[4] is not of type "Number" it is of type "string"');
+  });
 });
