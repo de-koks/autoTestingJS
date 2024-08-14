@@ -3,10 +3,10 @@ import { expect } from 'chai';
 
 // Importing functions 'describe', 'beforeEach', 'afterEach' and 'it' from 'mocha' which is a test framework.
 import { describe, beforeEach, afterEach, it } from 'mocha';
-import NumbersValidator from "../../app/numbers-validator.js";
 
 // Importing the NumbersValidator class from the relative path '../app/numbers-validator'
 // so we can test its methods.
+import NumbersValidator from "../../app/numbers-validator.js";
 
 // 'describe' is used to group related tests together into a test suite.
 // Here, it describes a suite of tests for the 'isNumberEven' method of NumbersValidator class.
