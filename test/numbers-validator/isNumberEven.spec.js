@@ -38,9 +38,35 @@ describe('isNumberEven', function () {
 
   // Additional tests would follow for different test cases, such as testing if an odd number
   // returns false or if passing a non-number throws an error.
+  it('should return false if number is odd', function() {
+    expect(validator.isNumberEven(3)).to.be.equal(false);
+  });
+
+  it('should return true if provided with zero', () => {
+    expect(validator.isNumberEven(0)).to.be.equal(true);
+  });
+  
   it('should return an error when is provided with a string', () => {
     expect(function() {
       validator.isNumberEven('4')
     }).to.throw('[4] is not of type "Number" it is of type "string"');
+  });
+
+  it('should return an error if provided with undefined', function () {
+    expect(() => {
+      validator.isNumberEven(undefined)
+    }).to.throw('[undefined] is not of type "Number" it is of type "undefined"');
+  });
+
+  it('should return an error if provided with null', () => {
+    expect(function() {
+      validator.isNumberEven(null)
+    }).to.throw('[null] is not of type "Number" it is of type "object"');
+  });
+
+  it('should return an error is provided with boolean', function() {
+    expect(function() {
+      validator.isNumberEven(true)
+    }).to.throw('[true] is not of type "Number" it is of type "boolean"');
   });
 });
