@@ -25,3 +25,33 @@ describe('getEvenNumbersFromArray positive tests', function () {
         expect(validator.getEvenNumbersFromArray([-1, 3, 15])).to.deep.equal([]);
     });
 });
+
+describe('getEvenNumbersFromArray negative tests', function () {
+    let validator;
+
+    beforeEach(function () {
+        validator = new NumbersValidator();
+    });
+
+    afterEach(function () {
+        validator = null;
+    });
+
+    it('should throw an error if provided with an array containing a string', () => {
+        expect(() => {
+            validator.getEvenNumbersFromArray([1, "2", 3])
+        }).to.throw('[1,2,3] is not an array of "Numbers"');
+    });
+
+    it('should throw an error if provided with an array containing undefined', () => {
+        expect(function () {
+            validator.getEvenNumbersFromArray([7, 2, undefined])
+        }).to.throw('[7,2,] is not an array of "Numbers"');
+    });
+
+    it('should throw an erro if provided with an array containing an object', () => {
+        expect(() => {
+            validator.getEvenNumbersFromArray([3, {}, 8])
+        }).to.throw('[3,[object Object],8] is not an array of "Numbers"');
+    });
+});
