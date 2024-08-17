@@ -10,7 +10,7 @@ import NumbersValidator from "../../app/numbers-validator.js";
 
 // 'describe' is used to group related tests together into a test suite.
 // Here, it describes a suite of tests for the 'isNumberEven' method of NumbersValidator class.
-describe('isNumberEven', function () {
+describe('isNumberEven positive tests', function () {
   // Declaring a variable 'validator' outside of the 'beforeEach' and 'it' blocks
   // to make it accessible throughout this describe block.
   let validator;
@@ -45,14 +45,44 @@ describe('isNumberEven', function () {
   it('should return true if provided with zero', () => {
     expect(validator.isNumberEven(0)).to.be.equal(true);
   });
-  
+});
+
+describe('isNumberEven negative tests', function () {
+  let validator;
+
+  beforeEach(function () {
+    validator = new NumbersValidator();
+  });
+
+  afterEach(function () {
+    validator = null;
+  });
+
   it('should return an error when is provided with a string', () => {
     expect(function() {
       validator.isNumberEven('4')
     }).to.throw('[4] is not of type "Number" it is of type "string"');
   });
 
-  it('should return an error if provided with undefined', function () {
+  it('should return an error is provided with boolean', function() {
+    expect(function() {
+      validator.isNumberEven(true)
+    }).to.throw('[true] is not of type "Number" it is of type "boolean"');
+  });
+
+  it('should return an error if provided with an object', function () {
+    expect(() => {
+      validator.isNumberEven({})
+    }).to.throw('[[object Object]] is not of type "Number" it is of type "object"');
+  });
+
+  it('should return an error if provided with an array', function () {
+    expect(() => {
+      validator.isNumberEven([10])
+    }).to.throw('[10] is not of type "Number" it is of type "object"');
+  });
+
+  it('should return an error if provided with an undefined', function () {
     expect(() => {
       validator.isNumberEven(undefined)
     }).to.throw('[undefined] is not of type "Number" it is of type "undefined"');
@@ -62,11 +92,5 @@ describe('isNumberEven', function () {
     expect(function() {
       validator.isNumberEven(null)
     }).to.throw('[null] is not of type "Number" it is of type "object"');
-  });
-
-  it('should return an error is provided with boolean', function() {
-    expect(function() {
-      validator.isNumberEven(true)
-    }).to.throw('[true] is not of type "Number" it is of type "boolean"');
   });
 });
