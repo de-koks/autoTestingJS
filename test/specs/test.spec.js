@@ -1,4 +1,4 @@
-const { browser, expect } = require("@wdio/globals");
+import { browser, expect } from "@wdio/globals";
 
 describe('Trial suit', () => {
 
