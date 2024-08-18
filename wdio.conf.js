@@ -26,7 +26,6 @@ exports.config = {
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
-        './test/specs/test.e2e.js'
     ],
     //
     // ============
