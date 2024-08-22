@@ -27,9 +27,9 @@ describe('Free Trial form required fields validation', () => {
         await expect(emailValidationErrorMessage).toBeDisplayed();
     });
 
-    it('Verify Email wrong format validation error message properties', async () => {
+    it('Verify Email wrong format validation error message text', async () => {
         const emailValidationErrorMessage = 
-            await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
+            await $('//div[@data-test-id="free-trial-form"]//div[@data-test-id="email-field-error-message"]');
     
         await expect(emailValidationErrorMessage).
             toHaveText("Invalid format for email");
@@ -53,14 +53,16 @@ describe('ECP Locator search', () => {
         await $('[data-test-id="autosuggest-input-submit-button"]').click();
     });
 
-    it('Verify search results are displayed', async () => {
+    it('Search results counter is displayed', async () => {
         const loadingSpinner = await $('[data-test-id="loading-spinner-container"]');
         await loadingSpinner.waitForDisplayed({ reverse: true });
 
         const searchResultsCounter = await $('//div[@data-test-id="search-results_results-count"]');
         await expect(searchResultsCounter).toBeDisplayed();
+    });
 
-        const searchResultsCards = await $('//div[@data-test-id="search-results-container"]');
-        await expect(searchResultsCards).toBeDisplayed();
+    it('Search result cards are displayed', async () => {
+        const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
+        await expect(firstSearchResultsCard).toBeDisplayed();
     });
 });
