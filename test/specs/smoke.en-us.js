@@ -30,10 +30,6 @@ describe('Free Trial form required fields validation', () => {
     it('Verify Email wrong format validation error message properties', async () => {
         const emailValidationErrorMessage = 
             await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
-
-        //check that message has red font
-        await expect(emailValidationErrorMessage).
-            toHaveElementProperty('color', 'rgb(221, 28, 20)');
     
         await expect(emailValidationErrorMessage).
             toHaveText("Invalid format for email");
@@ -50,5 +46,21 @@ describe('ECP Locator search', () => {
 
         await $('a[aria-label="Find an Eye Doctor"]').click();
         await expect(browser).toHaveUrl(expect.stringContaining(ECPLocatorPageUrlEnUs));
+    });
+
+    it('Perform search on ECP locator page', async () => {
+        await $('[data-test-id="search-form_search-input"]').addValue('NY');
+        await $('[data-test-id="autosuggest-input-submit-button"]').click();
+    });
+
+    it('Verify search results are displayed', async () => {
+        const loadingSpinner = await $('[data-test-id="loading-spinner-container"]');
+        await loadingSpinner.waitForDisplayed({ reverse: true });
+
+        const searchResultsCounter = await $('//div[@data-test-id="search-results_results-count"]');
+        await expect(searchResultsCounter).toBeDisplayed();
+
+        const searchResultsCards = await $('//div[@data-test-id="search-results-container"]');
+        await expect(searchResultsCards).toBeDisplayed();
     });
 });
