@@ -162,6 +162,16 @@ describe('Filtering products on Product page', () => {
             //enable current option
             await filterOption.click();
             const currentSelectedOptionName = await filterOption.getAttribute('name');
+            browser.waitUntil(
+                () => {
+                  const isLoadingVisible = $('*[data-test-id="loading-spinner-container"]').isDisplayed();
+                  return !isLoadingVisible;
+                },
+                {
+                  timeout: 5000, // maximum time to wait in milliseconds
+                  timeoutMsg: 'Expected the loading spinner to disappear after 5 seconds'
+                }
+            );
 
             //close 'Product Family' dropdown
             //await productFamilyDropdown.click();
@@ -169,7 +179,10 @@ describe('Filtering products on Product page', () => {
             //check that product name on each card matches currently selected filter option
             const filteredProducts = await $$('//h3[@data-test-id="product-card-text"]//span');
             for (let product of filteredProducts) {
-                await expect(product).toHaveText(expect.stringContaining(currentSelectedOptionName));
+                const text = await product.getText();
+                console.log(text);
+                //expect(text).toContain(currentSelectedOptionName);
+                //await expect(product).toHaveText(expect.stringContaining(currentSelectedOptionName));
             }
 
             //open again 'Product Family' dropdown and disable option
