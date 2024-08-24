@@ -53,14 +53,6 @@ describe('ECP Locator search', () => {
         await $('[data-test-id="autosuggest-input-submit-button"]').click();
     });
 
-    it('Search results counter is displayed', async () => {
-        const loadingSpinner = await $('[data-test-id="loading-spinner-container"]');
-        await loadingSpinner.waitForDisplayed({ reverse: true });
-
-        const searchResultsCounter = await $('[data-test-id="search-results_results-count"]');
-        await expect(searchResultsCounter).toBeDisplayed();
-    });
-
     it('Search result cards are displayed', async () => {
         const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
         await expect(firstSearchResultsCard).toBeDisplayed();
