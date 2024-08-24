@@ -126,7 +126,7 @@ describe('Step 1 of Complaint form saves inputted data', () => {
     });
 });
 
-describe('Filtering products on Product page', () => {
+describe('Product detail page', () => {
     it('Navigate to Product page', async () => {
         await $('//a[@aria-label="Products"]').click();
 
@@ -149,48 +149,15 @@ describe('Filtering products on Product page', () => {
         await expect(replacementScheduleDropdown).toBeDisplayed();
     });
 
-    it('Filter products by Product Family', async () => {
-        const productFamilyDropdown = await $('button[data-test-id="product-family"]');
-        await productFamilyDropdown.scrollIntoView();
-        await productFamilyDropdown.click();
+    it('Navigate to and verify Product page', async () => {
+        const firstProductCard = await $$('[data-test-id="product-card-container"]')[0];
+        const firstProductTitleElement = await $$('[data-test-id="product-card-text"]>span')[0];
+        const firstProductTitleText = await firstProductTitleElement.getText();
 
-        const productFamilyOptions = await $$('[data-test-id="select-options-container"] button');
+        await firstProductCard.click();
 
-        //select every option in 'Product Family' filter one by one
-        for (let filterOption of productFamilyOptions) {
-
-            //enable current option
-            await filterOption.click();
-            const currentSelectedOptionName = await filterOption.getAttribute('name');
-            browser.waitUntil(
-                () => {
-                  const isLoadingVisible = $('*[data-test-id="loading-spinner-container"]').isDisplayed();
-                  return !isLoadingVisible;
-                },
-                {
-                  timeout: 5000, // maximum time to wait in milliseconds
-                  timeoutMsg: 'Expected the loading spinner to disappear after 5 seconds'
-                }
-            );
-
-            //close 'Product Family' dropdown
-            //await productFamilyDropdown.click();
-
-            //check that product name on each card matches currently selected filter option
-            const filteredProducts = await $$('//h3[@data-test-id="product-card-text"]//span');
-            for (let product of filteredProducts) {
-                const text = await product.getText();
-                console.log(text);
-                //expect(text).toContain(currentSelectedOptionName);
-                //await expect(product).toHaveText(expect.stringContaining(currentSelectedOptionName));
-            }
-
-            //open again 'Product Family' dropdown and disable option
-            //await productFamilyDropdown.click();
-            await filterOption.click();
-        }
-
-        //close 'Product Family' dropdown
-        //await productFamilyDropdown.click();
+        await expect(browser).toHaveTitle(expect.stringContaining(firstProductTitleText));
+        const bannerTitle = await $('[data-test-id="banner-headline"] > span');
+        await expect(bannerTitle).toHaveText(expect.stringContaining(firstProductTitleText));
     });
 });
