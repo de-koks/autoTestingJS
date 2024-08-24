@@ -57,7 +57,7 @@ describe('ECP Locator search', () => {
         const loadingSpinner = await $('[data-test-id="loading-spinner-container"]');
         await loadingSpinner.waitForDisplayed({ reverse: true });
 
-        const searchResultsCounter = await $('//div[@data-test-id="search-results_results-count"]');
+        const searchResultsCounter = await $('[data-test-id="search-results_results-count"]');
         await expect(searchResultsCounter).toBeDisplayed();
     });
 
@@ -68,7 +68,8 @@ describe('ECP Locator search', () => {
 });
 
 describe('Step 1 of Complaint form saves inputted data', () => {
-    
+ 
+    //variables to input data and to verify the data is saved
     const firstName = 'John';
     const lastName = 'Doe';
     const email = 'example@email.com';
@@ -122,5 +123,61 @@ describe('Step 1 of Complaint form saves inputted data', () => {
         await expect($('input[data-test-id="addressTwo"')).toHaveValue(addressTwo);
         await expect($('input[data-test-id="city"')).toHaveValue(city);
         await expect($('input[data-test-id="zipCode"')).toHaveValue(zipCode);
+    });
+});
+
+describe('Filtering products on Product page', () => {
+    it('Navigate to Product page', async () => {
+        await $('//a[@aria-label="Products"]').click();
+
+        const dropdownNavMenu = await $('[data-test-id="dropdown-nav-menu"]');
+        await expect(dropdownNavMenu).toBeDisplayed();
+
+        await $('a[aria-label="All Products"]').click();
+        await expect(browser).toHaveUrl(expect.stringContaining(productPageUrlEnUs));
+    });
+
+    it('Product Filters are displayed on Product page', async () => {
+        const productFamilyDropdown = await $('button[data-test-id="product-family"]');
+        const conditionDropdown = await $('button[data-test-id="condition"]');
+        const needStateDropdown = await $('button[data-test-id="need-state"]');
+        const replacementScheduleDropdown = await $('button[data-test-id="replacement-schedule"]');
+
+        await expect(productFamilyDropdown).toBeDisplayed();
+        await expect(conditionDropdown).toBeDisplayed();
+        await expect(needStateDropdown).toBeDisplayed();
+        await expect(replacementScheduleDropdown).toBeDisplayed();
+    });
+
+    it('Filter products by Product Family', async () => {
+        const productFamilyDropdown = await $('button[data-test-id="product-family"]');
+        await productFamilyDropdown.scrollIntoView();
+        await productFamilyDropdown.click();
+
+        const productFamilyOptions = await $$('[data-test-id="select-options-container"] button');
+
+        //select every option in 'Product Family' filter one by one
+        for (let filterOption of productFamilyOptions) {
+
+            //enable current option
+            await filterOption.click();
+            const currentSelectedOptionName = await filterOption.getAttribute('name');
+
+            //close 'Product Family' dropdown
+            //await productFamilyDropdown.click();
+
+            //check that product name on each card matches currently selected filter option
+            const filteredProducts = await $$('//h3[@data-test-id="product-card-text"]//span');
+            for (let product of filteredProducts) {
+                await expect(product).toHaveText(expect.stringContaining(currentSelectedOptionName));
+            }
+
+            //open again 'Product Family' dropdown and disable option
+            //await productFamilyDropdown.click();
+            await filterOption.click();
+        }
+
+        //close 'Product Family' dropdown
+        //await productFamilyDropdown.click();
     });
 });
