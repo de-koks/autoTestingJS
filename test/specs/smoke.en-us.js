@@ -60,7 +60,7 @@ describe('Free Trial form required fields validation', () => {
     });
 });
 
-describe('ECP Locator search', () => {
+describe('Perform ECP Locator search', () => {
     it('Navigate to ECP Locator page', async () => {
         await browser.url(homePageUrlEnUs);
         await $('a[aria-label="Get Contacts"]').waitForAndClick();
@@ -77,9 +77,48 @@ describe('ECP Locator search', () => {
         await $('[data-test-id="autosuggest-input-submit-button"]').waitForAndClick();
     });
 
-    it('Search result cards are displayed', async () => {
+    it('Search results are displayed', async () => {
         const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
-        await expect(firstSearchResultsCard).toBeDisplayed();
+        await firstSearchResultsCard.waitForDisplayed({
+            timeout: 10000,
+            interval: 500
+        });
+        const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
+        await expect(searchResultCounter).toBeDisplayed();      
+    });
+});
+
+describe('Applying filters to ECP Locator search results', async () => {
+
+    function extractSearchResultNumber(searchResultCounterText) {
+        const match = searchResultCounterText.match(/(\d+)\s+Results$/);
+        if (match && match[1]) {
+          return parseInt(match[1], 10);
+        }
+        throw new Error('The text from the search result counter does not match the expected pattern');
+    }
+
+    it('Apply "Preferred" filter', async () => {
+        const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
+        const searchResultCounterTextWithoutAppliedFilters = await searchResultCounter.getText();
+        const searchResultNumberWithoutAppliedFilters = extractSearchResultNumber(searchResultCounterTextWithoutAppliedFilters);
+
+        const preferredFilterCheckbox = await $('div[data-test-id="checkbox-buttonacuvue-preferred"]');
+        preferredFilterCheckbox.waitForAndClick();
+
+        const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
+        await firstSearchResultsCard.waitForDisplayed({
+            timeout: 10000,
+            interval: 500
+        });
+
+        const searchResultCounterTextPreferredFilterApplied = await searchResultCounter.getText();
+        const searchResultNumberPreferredFilterApplied = extractSearchResultNumber(searchResultCounterTextPreferredFilterApplied);
+
+        //number of results with applied filter should be less than number without filters
+        expect(searchResultNumberPreferredFilterApplied < searchResultNumberWithoutAppliedFilters).toBe(true);
+
+        await preferredFilterCheckbox.waitForAndClick();
     });
 });
 
