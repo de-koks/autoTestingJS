@@ -13,9 +13,25 @@ browser.addCommand("waitForAndClick", async function () {
     await this.click();
 }, true);
 
-describe('Free Trial form required fields validation', () => {
-    it('Navigate to Free Trial form', async () => {
+describe('Open Homepage and close Cookie banner', () => {
+    it('Cookie banners appears on Home page', async () => {
         await browser.url(homePageUrlEnUs);
+
+        const cookieBanner = await $('div[aria-label="Cookie banner"]');
+        await expect(cookieBanner).toBeDisplayed();
+    });
+
+    it('Closing Cookie banner', async () => {
+        const cookieBanner = await $('div[aria-label="Cookie banner"]');
+        const closeCookieBannerButton = await $('button.banner-close-button');
+
+        await closeCookieBannerButton.waitForAndClick();
+        expect(cookieBanner).not.toBeDisplayed();
+    });
+});
+
+describe('Free Trial form required fields validation', () => {
+    it('Navigate to Free Trial form', async () => {        
         await $('a[aria-label="Get Contacts"]').waitForAndClick();
 
         const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
