@@ -5,6 +5,14 @@ const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an
 const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
 const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
+browser.addCommand("waitForAndClick", async function () {
+    await this.waitForDisplayed({
+        timeout: 5000,
+        interval: 500
+    });
+    await this.click();
+}, true);
+
 describe('Free Trial form required fields validation', () => {
     it('Navigate to Free Trial form', async () => {
         await browser.url(homePageUrlEnUs);
