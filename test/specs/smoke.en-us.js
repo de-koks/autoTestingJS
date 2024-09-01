@@ -57,6 +57,21 @@ describe('Free Trial form required fields validation', () => {
     
         await expect(emailValidationErrorMessage).
             toHaveText("Invalid format for email");
+
+        const errorMessageFontColor = await emailValidationErrorMessage.execute((element) => {
+            return window.getComputedStyle(element).color;
+        });
+        expect(errorMessageFontColor).toEqual('rgb(221, 28, 20)');
+    });
+    
+    it('Verify Email field has border highlighted in red', async () => {
+        const emailField = await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]');
+
+        const borderValue = await emailField.execute((element) => {
+            return window.getComputedStyle(element).border;
+        });
+        
+        expect(borderValue).toEqual('2px solid rgb(221, 28, 20)');
     });
 });
 
@@ -120,6 +135,41 @@ describe('Applying filters to ECP Locator search results', async () => {
 
         await preferredFilterCheckbox.waitForAndClick();
     });
+});
+
+describe('ECP Detail page', () => {
+    it('Navigate to ECP Detail page, verify clinic title', async () => {
+        const firstClinicTitleElement = await $('(//h4[@data-test-id="search-result_title"])[1]');
+        const firstClinicTitle = await firstClinicTitleElement.getText();
+
+        await firstClinicTitleElement.waitForAndClick();
+
+        await browser.waitUntil( async () => await $('div[data-test-id="ecp-details-section"]').isDisplayed(),
+            { timeout: 5000, interval: 500, timeoutMsg: "ECP details section was not loaded" }
+        );
+        
+        const ecpDetailClinicTitleElement = await $('h3[data-test-id="ecp-details-info-section-title"]>*');
+        await expect(ecpDetailClinicTitleElement).toHaveText(firstClinicTitle);
+
+        const ecpDetailCliniTitleFontSize = await ecpDetailClinicTitleElement.execute((element) => {
+            return window.getComputedStyle(element).fontSize;
+        });
+        
+        expect(ecpDetailCliniTitleFontSize).toEqual('28px');
+    });
+
+    it('Get Directions provides with a Google maps route', async () => {
+        await $('a[data-test-id="get-directions"]').waitForAndClick();
+        
+        const handles = await browser.getWindowHandles();
+        expect(handles.length).toEqual(2);
+
+        await browser.switchToWindow(handles[1]);
+        await expect(browser).toHaveUrl(expect.stringContaining('https://www.google.com/maps/dir/'));
+        await browser.closeWindow();
+
+        await browser.switchToWindow(handles[0]);
+    }); 
 });
 
 describe('Step 1 of Complaint form saves inputted data', () => {
