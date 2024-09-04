@@ -1,4 +1,5 @@
 import { existsSync, mkdirSync } from 'fs';
+const allure = require('allure-commandline');
 
 export const config = {
     //
@@ -314,6 +315,23 @@ export const config = {
     * @param {string} oldSessionId session ID of the old session
     * @param {string} newSessionId session ID of the new session
     */
+    onComplete: function () {
+        const reportError = new Error('Could not generate Allure report');
+        const generation = allure(['generate', 'allure-results', '--clean']);
+    
+        return new Promise((resolve, reject) => {
+          const generationTimeout = setTimeout(() => reject(reportError), 5000);
+          generation.on('exit', function (exitCode) {
+            clearTimeout(generationTimeout);
+    
+            if (exitCode !== 0) {
+              return reject(reportError);
+            }
+            console.log('Allure report successfully generated');
+            resolve();
+          });
+        });
+    },
     // onReload: function(oldSessionId, newSessionId) {
     // }
     /**
