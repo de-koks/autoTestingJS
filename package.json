@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@wdio/allure-reporter": "^9.0.4",
-    "@wdio/junit-reporter": "^9.0.4"
+    "@wdio/junit-reporter": "^9.0.4",
+    "allure-commandline": "^2.30.0"
   }
 }
