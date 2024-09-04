@@ -3,6 +3,7 @@
 
 **/coverage
 **/mochawesome-report
+**/allure-results
 **/artifacts
 **/report
 **/node_modules

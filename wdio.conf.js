@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync } from 'fs';
-const allure = require('allure-commandline');
+import pkg from 'allure-commandline';
+const { allure } = pkg;
 
 export const config = {
     //
@@ -134,7 +135,7 @@ export const config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     
-    //reporters: ['spec'],
+    // reporters: ['spec'],
 
     // reporters: ['spec', ['junit', {
     //     outputDir: './report',
@@ -144,12 +145,22 @@ export const config = {
     // }]],
 
     reporters: [
-        'allure', {
-          outputDir: 'allure-results',
-          disableWebdriverStepsReporting: true,
-          disableWebdriverScreenshotsReporting: true,
-        }       
+        'spec', [
+            'allure', {
+                outputDir: './allure-results',
+                disableWebdriverStepsReporting: true,
+                disableWebdriverScreenshotsReporting: true
+            }
+        ]
     ],
+
+    // reporters: [
+    //     'allure', {
+    //       outputDir: './allure-results',
+    //       disableWebdriverStepsReporting: true,
+    //       disableWebdriverScreenshotsReporting: true,
+    //     }       
+    // ],
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
