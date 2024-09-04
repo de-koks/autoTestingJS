@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run ./wdio.conf.js"
   },
+  "type": "module",
   "keywords": [],
   "authors": [
     "Denis_Kosun@epam.com"
@@ -21,5 +22,9 @@
     "geckodriver": "^4.4.3",
     "wdio-geckodriver-service": "^4.1.2",
     "wdio-wait-for": "^3.0.11"
+  },
+  "dependencies": {
+    "@wdio/allure-reporter": "^9.0.4",
+    "@wdio/junit-reporter": "^9.0.4"
   }
 }
