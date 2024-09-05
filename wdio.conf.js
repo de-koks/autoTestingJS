@@ -137,22 +137,22 @@ export const config = {
     
     // reporters: ['spec'],
 
-    // reporters: ['spec', ['junit', {
-    //     outputDir: './report',
-    //     outputFileFormat: function (options) {
-    //       return `results-${options.cid}.xml`
-    //     },
-    // }]],
+    reporters: ['spec', ['junit', {
+        outputDir: './report',
+        outputFileFormat: function (options) {
+          return `results-${options.cid}.xml`
+        },
+    }]],
 
-    reporters: [
-        'spec', [
-            'allure', {
-                outputDir: './allure-results',
-                disableWebdriverStepsReporting: true,
-                disableWebdriverScreenshotsReporting: true
-            }
-        ]
-    ],
+    // reporters: [
+    //     'spec', [
+    //         'allure', {
+    //             outputDir: './allure-results',
+    //             disableWebdriverStepsReporting: true,
+    //             disableWebdriverScreenshotsReporting: true
+    //         }
+    //     ]
+    // ],
 
     // reporters: [
     //     'allure', {
