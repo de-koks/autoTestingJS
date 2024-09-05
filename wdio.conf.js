@@ -54,10 +54,10 @@ export const config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [
-        {
-            acceptInsecureCerts: true,
-            browserName: 'chrome'
-        },
+        // {
+        //     acceptInsecureCerts: true,
+        //     browserName: 'chrome'
+        // },
         {
             browserName: 'firefox'
         }

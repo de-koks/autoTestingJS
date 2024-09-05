@@ -42,6 +42,7 @@ describe('Free Trial form required fields validation', () => {
     });
 
     it('Verify Email wrong format validation error message is displayed', async () => {
+        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitForAndClick();
         await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').setValue('@mail.com');
         const emailValidationErrorMessage = 
             await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
@@ -77,7 +78,7 @@ describe('Free Trial form required fields validation', () => {
 
 describe('Perform ECP Locator search', () => {
     it('Navigate to ECP Locator page', async () => {
-        await browser.url(homePageUrlEnUs);
+        // await browser.url(homePageUrlEnUs);
         await $('a[aria-label="Get Contacts"]').waitForAndClick();
 
         const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
@@ -233,6 +234,7 @@ describe('Step 1 of Complaint form saves inputted data', () => {
 
 describe('Product detail page', () => {
     it('Navigate to Product page', async () => {
+        await browser.execute(() => window.scrollTo(0, 0));
         await $('//a[@aria-label="Products"]').waitForAndClick();
 
         const dropdownNavMenu = await $('[data-test-id="dropdown-nav-menu"]');
