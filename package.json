@@ -19,7 +19,7 @@
     "@wdio/mocha-framework": "^9.0.0",
     "@wdio/spec-reporter": "^9.0.0",
     "@wdio/visual-service": "^6.0.0",
-    "geckodriver": "^4.4.3",
+    "geckodriver": "^4.4.4",
     "wdio-geckodriver-service": "^4.1.2",
     "wdio-wait-for": "^3.0.11"
   },
