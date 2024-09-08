@@ -11,6 +11,6 @@
     "wdio-wait-for": "^3.0.11"
   },
   "scripts": {
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./src/config/wdio.conf.js"
   }
 }
