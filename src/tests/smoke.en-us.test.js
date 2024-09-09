@@ -5,11 +5,12 @@ const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an
 const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
 const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
-browser.addCommand("waitForAndClick", async function () {
+browser.addCommand("waitScrollClick", async function () {
     await this.waitForDisplayed({
         timeout: 5000,
         interval: 500
     });
+    await this.scrollIntoView({ block: 'center', inline: 'center' });
     await this.click();
 }, true);
 
@@ -25,30 +26,30 @@ describe('Open Homepage and close Cookie banner', () => {
         const cookieBanner = await $('div[aria-label="Cookie banner"]');
         const closeCookieBannerButton = await $('button.banner-close-button');
 
-        await closeCookieBannerButton.waitForAndClick();
+        await closeCookieBannerButton.waitScrollClick();
         expect(cookieBanner).not.toBeDisplayed();
     });
 });
 
 describe('Free Trial form required fields validation', () => {
     it('Navigate to Free Trial form', async () => {        
-        await $('a[aria-label="Get Contacts"]').waitForAndClick();
+        await $('a[aria-label="Get Contacts"]').waitScrollClick();
 
         const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
         await expect(dropdownNavMenu).toBeDisplayed();
 
-        await $('a[aria-label="Get a Free[^*] Trial"]').waitForAndClick();
+        await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
         await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
     });
 
     it('Verify Email wrong format validation error message is displayed', async () => {
-        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitForAndClick();
+        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitScrollClick();
         await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').setValue('@mail.com');
         const emailValidationErrorMessage = 
             await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
         await expect(emailValidationErrorMessage).not.toBeDisplayed();
 
-        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="lastName"]').waitForAndClick();
+        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="lastName"]').waitScrollClick();
         await expect(emailValidationErrorMessage).toBeDisplayed();
     });
 
@@ -79,18 +80,18 @@ describe('Free Trial form required fields validation', () => {
 describe('Perform ECP Locator search', () => {
     it('Navigate to ECP Locator page', async () => {
         // await browser.url(homePageUrlEnUs);
-        await $('a[aria-label="Get Contacts"]').waitForAndClick();
+        await $('a[aria-label="Get Contacts"]').waitScrollClick();
 
         const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
         await expect(dropdownNavMenu).toBeDisplayed();
 
-        await $('a[aria-label="Find an Eye Doctor"]').waitForAndClick();
+        await $('a[aria-label="Find an Eye Doctor"]').waitScrollClick();
         await expect(browser).toHaveUrl(expect.stringContaining(ECPLocatorPageUrlEnUs));
     });
 
     it('Perform search on ECP locator page', async () => {
         await $('[data-test-id="search-form_search-input"]').addValue('NY');
-        await $('[data-test-id="autosuggest-input-submit-button"]').waitForAndClick();
+        await $('[data-test-id="autosuggest-input-submit-button"]').waitScrollClick();
     });
 
     it('Search results are displayed', async () => {
@@ -120,7 +121,7 @@ describe('Applying filters to ECP Locator search results', async () => {
         const searchResultNumberWithoutAppliedFilters = extractSearchResultNumber(searchResultCounterTextWithoutAppliedFilters);
 
         const preferredFilterCheckbox = await $('div[data-test-id="checkbox-buttonacuvue-preferred"]');
-        preferredFilterCheckbox.waitForAndClick();
+        preferredFilterCheckbox.waitScrollClick();
 
         const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
         await firstSearchResultsCard.waitForDisplayed({
@@ -134,7 +135,7 @@ describe('Applying filters to ECP Locator search results', async () => {
         //number of results with applied filter should be less than number without filters
         expect(searchResultNumberPreferredFilterApplied < searchResultNumberWithoutAppliedFilters).toBe(true);
 
-        await preferredFilterCheckbox.waitForAndClick();
+        await preferredFilterCheckbox.waitScrollClick();
     });
 });
 
@@ -143,7 +144,7 @@ describe('ECP Detail page', () => {
         const firstClinicTitleElement = await $('(//h4[@data-test-id="search-result_title"])[1]');
         const firstClinicTitle = await firstClinicTitleElement.getText();
 
-        await firstClinicTitleElement.waitForAndClick();
+        await firstClinicTitleElement.waitScrollClick();
 
         await browser.waitUntil( async () => await $('div[data-test-id="ecp-details-section"]').isDisplayed(),
             { timeout: 5000, interval: 500, timeoutMsg: "ECP details section was not loaded" }
@@ -160,7 +161,7 @@ describe('ECP Detail page', () => {
     });
 
     it('Get Directions provides with a Google maps route', async () => {
-        await $('a[data-test-id="get-directions"]').waitForAndClick();
+        await $('a[data-test-id="get-directions"]').waitScrollClick();
         
         const handles = await browser.getWindowHandles();
         expect(handles.length).toEqual(2);
@@ -186,8 +187,8 @@ describe('Step 1 of Complaint form saves inputted data', () => {
     const zipCode = '12345'; 
     
     it('Navigate to Complaint form', async () => {
-        await $('//*[@data-test-id="nav-link"]/*[text()="Contact Us"]').waitForAndClick();
-        await $('//*[@data-test-id="link"]/*[text()="Complaint"]').waitForAndClick();
+        await $('//*[@data-test-id="nav-link"]/*[text()="Contact Us"]').waitScrollClick();
+        await $('//*[@data-test-id="link"]/*[text()="Complaint"]').waitScrollClick();
     });
 
     it('Fill out fields on Complaint form Step 1', async () => {
@@ -200,19 +201,19 @@ describe('Step 1 of Complaint form saves inputted data', () => {
         await $('input[data-test-id="city"').addValue(city);
         await $('input[data-test-id="zipCode"').addValue(zipCode);
 
-        await $('[data-test-id="complaint-form"] [data-test-id="country"]').waitForAndClick();
-        await $('[data-test-id="complaint-form"] [data-test-id="dropdown-option-0"]').waitForAndClick();
+        await $('[data-test-id="complaint-form"] [data-test-id="country"]').waitScrollClick();
+        await $('[data-test-id="complaint-form"] [data-test-id="dropdown-option-0"]').waitScrollClick();
     });
 
     it('Navigate to Step 2', async () => {
-        await $('[data-test-id="complaint-form"] [data-test-id="next"]').waitForAndClick();
+        await $('[data-test-id="complaint-form"] [data-test-id="next"]').waitScrollClick();
 
         const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
         await expect(stepTwoTittle).toHaveText('Step 2: Detailed Information');
     });
 
     it('Return to step 1 and verify inputted data is saved', async () => {
-        await $('[data-test-id="complaint-form"] [data-test-id="back"]').waitForAndClick();
+        await $('[data-test-id="complaint-form"] [data-test-id="back"]').waitScrollClick();
 
         const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
         await expect(stepTwoTittle).toHaveText('Step 1: Contact Information');
@@ -235,12 +236,12 @@ describe('Step 1 of Complaint form saves inputted data', () => {
 describe('Product detail page', () => {
     it('Navigate to Product page', async () => {
         await browser.execute(() => window.scrollTo(0, 0));
-        await $('//a[@aria-label="Products"]').waitForAndClick();
+        await $('//a[@aria-label="Products"]').waitScrollClick();
 
         const dropdownNavMenu = await $('[data-test-id="dropdown-nav-menu"]');
         await expect(dropdownNavMenu).toBeDisplayed();
 
-        await $('a[aria-label="All Products"]').waitForAndClick();
+        await $('a[aria-label="All Products"]').waitScrollClick();
         await expect(browser).toHaveUrl(expect.stringContaining(productPageUrlEnUs));
     });
 
@@ -261,7 +262,7 @@ describe('Product detail page', () => {
         const firstProductTitleElement = await $$('[data-test-id="product-card-text"]>span')[0];
         const firstProductTitleText = await firstProductTitleElement.getText();
 
-        await firstProductCard.waitForAndClick();
+        await firstProductCard.waitScrollClick();
 
         await expect(browser).toHaveTitle(expect.stringContaining(firstProductTitleText));
         const bannerTitle = await $('[data-test-id="banner-headline"] > span');
