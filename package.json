@@ -1,5 +1,6 @@
 {
   "name": "atm-with-js-basic",
+  "private": true,
   "type": "module",
   "devDependencies": {
     "@wdio/allure-reporter": "^9.0.8",
@@ -11,6 +12,6 @@
     "wdio-wait-for": "^3.0.11"
   },
   "scripts": {
-    "wdio": "wdio run ./src/config/wdio.conf.js"
+    "test": "wdio run ./src/config/wdio.conf.js"
   }
 }

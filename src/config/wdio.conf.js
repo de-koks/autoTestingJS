@@ -24,6 +24,7 @@ export const config = {
         //'./test/specs/**/*.js'
         //'./src/tests/**/*.js'
         '../tests/**/*.js'
+        //'./../tests/**/*.js'
     ],
     // Patterns to exclude.
     exclude: [
@@ -64,7 +65,8 @@ export const config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    //logLevel: 'info',
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:
