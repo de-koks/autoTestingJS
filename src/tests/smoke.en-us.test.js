@@ -1,4 +1,7 @@
 import { browser, expect } from "@wdio/globals";
+import HomePage from "../po/pages/home.page";
+
+const homePage = new HomePage();
 
 const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
 const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
@@ -16,7 +19,7 @@ browser.addCommand("waitScrollClick", async function () {
 
 describe('Open Homepage and close Cookie banner', () => {
     it('Cookie banners appears on Home page', async () => {
-        await browser.url(homePageUrlEnUs);
+        await homePage.open();
 
         const cookieBanner = await $('div[aria-label="Cookie banner"]');
         await expect(cookieBanner).toBeDisplayed();
@@ -32,11 +35,13 @@ describe('Open Homepage and close Cookie banner', () => {
 });
 
 describe('Free Trial form required fields validation', () => {
-    it('Navigate to Free Trial form', async () => {        
-        await $('a[aria-label="Get Contacts"]').waitScrollClick();
+    it('Navigate to Free Trial form', async () => {     
+        await homePage.header.firstLevelMenuItem('getContacts').waitScrollClick();   
+        // await $('[data-test-id="first-level-menu-item-4"]').waitScrollClick();
 
-        const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
-        await expect(dropdownNavMenu).toBeDisplayed();
+        // const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
+        // await expect(dropdownNavMenu).toBeDisplayed();
+        await expect(homePage.header.dropMenu).toBeDisplayed();
 
         await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
         await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
