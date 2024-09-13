@@ -21,29 +21,34 @@ describe('Open Homepage and close Cookie banner', () => {
     it('Cookie banners appears on Home page', async () => {
         await homePage.open();
 
-        const cookieBanner = await $('div[aria-label="Cookie banner"]');
-        await expect(cookieBanner).toBeDisplayed();
+        // const cookieBanner = await $('div[aria-label="Cookie banner"]');
+        // await expect(cookieBanner).toBeDisplayed();
+        await expect(homePage.cookieBanner.rootEl).toBeDisplayed();
     });
 
     it('Closing Cookie banner', async () => {
-        const cookieBanner = await $('div[aria-label="Cookie banner"]');
-        const closeCookieBannerButton = await $('button.banner-close-button');
+        // const cookieBanner = await $('div[aria-label="Cookie banner"]');
+        // const closeCookieBannerButton = await $('button.banner-close-button');
+        // await closeCookieBannerButton.waitScrollClick();
+        await homePage.cookieBanner.close();
 
-        await closeCookieBannerButton.waitScrollClick();
-        expect(cookieBanner).not.toBeDisplayed();
+        // expect(cookieBanner).not.toBeDisplayed();
+        expect(homePage.cookieBanner.rootEl).not.toBeDisplayed();
     });
 });
 
 describe('Free Trial form required fields validation', () => {
-    it('Navigate to Free Trial form', async () => {     
+    it('Navigate to Free Trial form', async () => {
+        // await $('[data-test-id="first-level-menu-item-4"]').waitScrollClick();             
         await homePage.header.firstLevelMenuItem('getContacts').waitScrollClick();   
-        // await $('[data-test-id="first-level-menu-item-4"]').waitScrollClick();
 
         // const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
         // await expect(dropdownNavMenu).toBeDisplayed();
         await expect(homePage.header.dropMenu).toBeDisplayed();
 
-        await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
+        // await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
+        await homePage.header.getContactsOption('getFreeTrial').waitScrollClick();
+        
         await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
     });
 

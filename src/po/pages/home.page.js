@@ -1,16 +1,11 @@
-import CookieBannerComponent from "../components/common/cookieBanner.component";
-import HeaderComponent from "../components/common/header.component";
+import BasePage from "./base.page";
 
-class HomePage {
+class HomePage extends BasePage{
 
     constructor() {
-        this.cookieBanner = new CookieBannerComponent();
-        this.header = new HeaderComponent();
+        super('https://www.acuvue.com/en-us/')
     }
 
-    async open() {
-        await browser.url('https://www.acuvue.com/en-us/');
-    }
 }
 
 export default HomePage;
