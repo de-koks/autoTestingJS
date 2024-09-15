@@ -1,12 +1,16 @@
 import { browser, expect } from "@wdio/globals";
 import HomePage from "../po/pages/home.page";
+import FreeTrialFormPage from "../po/pages/freeTrialForm.page";
+import ECPLocatorPage from "../po/pages/ecpLocator.page";
 
 const homePage = new HomePage();
+const freeTrialFromPage = new FreeTrialFormPage();
+const ecpLocatorPage = new ECPLocatorPage();
 
-const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
+//const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
 const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
 const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
-const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
+// const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
 browser.addCommand("waitScrollClick", async function () {
     await this.waitForDisplayed({
@@ -49,37 +53,50 @@ describe('Free Trial form required fields validation', () => {
         // await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
         await homePage.header.getContactsOption('getFreeTrial').waitScrollClick();
         
-        await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
+        // await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
+        await expect(browser).toHaveUrl(freeTrialFromPage.url);
     });
 
     it('Verify Email wrong format validation error message is displayed', async () => {
-        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitScrollClick();
-        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').setValue('@mail.com');
-        const emailValidationErrorMessage = 
-            await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
-        await expect(emailValidationErrorMessage).not.toBeDisplayed();
+        // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitScrollClick();
+        await freeTrialFromPage.freeTrialForm.getField('email').waitScrollClick();
 
-        await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="lastName"]').waitScrollClick();
-        await expect(emailValidationErrorMessage).toBeDisplayed();
+        // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').setValue('@mail.com');
+        await freeTrialFromPage.freeTrialForm.getField('email').setValue('@mail.com');
+
+        // const emailValidationErrorMessage = 
+        //     await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
+        // await expect(emailValidationErrorMessage).not.toBeDisplayed();
+        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).not.toBeDisplayed();
+
+        // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="lastName"]').waitScrollClick();
+        await freeTrialFromPage.freeTrialForm.getField('firstName').waitScrollClick();
+
+        // await expect(emailValidationErrorMessage).toBeDisplayed();
+        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).toBeDisplayed();
     });
 
     it('Verify Email wrong format validation error message text', async () => {
         const emailValidationErrorMessage = 
-            await $('//div[@data-test-id="free-trial-form"]//div[@data-test-id="email-field-error-message"]');
-    
-        await expect(emailValidationErrorMessage).
-            toHaveText("Invalid format for email");
+            // await $('//div[@data-test-id="free-trial-form"]//div[@data-test-id="email-field-error-message"]');    
+        // await expect(emailValidationErrorMessage).toHaveText("Invalid format for email");
+        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).toHaveText("Invalid format for email");
 
-        const errorMessageFontColor = await emailValidationErrorMessage.execute((element) => {
+        // const errorMessageFontColor = await emailValidationErrorMessage.execute((element) => {
+        //     return window.getComputedStyle(element).color;
+        // });
+        const errorMessageFontColor = await freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email').execute((element) => {
             return window.getComputedStyle(element).color;
         });
         expect(errorMessageFontColor).toEqual('rgb(221, 28, 20)');
     });
     
     it('Verify Email field has border highlighted in red', async () => {
-        const emailField = await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]');
-
-        const borderValue = await emailField.execute((element) => {
+        // const emailField = await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]');
+        // const borderValue = await emailField.execute((element) => {
+        //     return window.getComputedStyle(element).border;
+        // });
+        const borderValue = await freeTrialFromPage.freeTrialForm.getField('email').execute((element) => {
             return window.getComputedStyle(element).border;
         });
         
@@ -89,14 +106,18 @@ describe('Free Trial form required fields validation', () => {
 
 describe('Perform ECP Locator search', () => {
     it('Navigate to ECP Locator page', async () => {
-        // await browser.url(homePageUrlEnUs);
-        await $('a[aria-label="Get Contacts"]').waitScrollClick();
+        // await $('a[aria-label="Get Contacts"]').waitScrollClick();
+        await freeTrialFromPage.header.firstLevelMenuItem('getContacts').waitScrollClick();
 
-        const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
-        await expect(dropdownNavMenu).toBeDisplayed();
+        // const dropdownNavMenu = await $('//div[@data-test-id="dropdown-nav-menu"]');
+        // await expect(dropdownNavMenu).toBeDisplayed();
+        await expect(freeTrialFromPage.header.dropMenu).toBeDisplayed();
 
-        await $('a[aria-label="Find an Eye Doctor"]').waitScrollClick();
-        await expect(browser).toHaveUrl(expect.stringContaining(ECPLocatorPageUrlEnUs));
+        // await $('a[aria-label="Find an Eye Doctor"]').waitScrollClick();
+        await freeTrialFromPage.header.getContactsOption('findDoctor').waitScrollClick();
+
+        // await expect(browser).toHaveUrl(expect.stringContaining(ECPLocatorPageUrlEnUs));
+        await expect(browser).toHaveUrl(expect.stringContaining(ecpLocatorPage.url));
     });
 
     it('Perform search on ECP locator page', async () => {
