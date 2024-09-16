@@ -59,33 +59,33 @@ describe('Free Trial form required fields validation', () => {
 
     it('Verify Email wrong format validation error message is displayed', async () => {
         // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').waitScrollClick();
-        await freeTrialFromPage.freeTrialForm.getField('email').waitScrollClick();
+        await freeTrialFromPage.freeTrialForm.field('email').waitScrollClick();
 
         // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="email"]').setValue('@mail.com');
-        await freeTrialFromPage.freeTrialForm.getField('email').setValue('@mail.com');
+        await freeTrialFromPage.freeTrialForm.field('email').setValue('@mail.com');
 
         // const emailValidationErrorMessage = 
         //     await $('div[data-test-id="free-trial-form"] div[data-test-id="email-field-error-message"]');
         // await expect(emailValidationErrorMessage).not.toBeDisplayed();
-        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).not.toBeDisplayed();
+        await expect(freeTrialFromPage.freeTrialForm.fieldErrorMessage('email')).not.toBeDisplayed();
 
         // await $('//div[@data-test-id="free-trial-form"]//input[@data-test-id="lastName"]').waitScrollClick();
-        await freeTrialFromPage.freeTrialForm.getField('firstName').waitScrollClick();
+        await freeTrialFromPage.freeTrialForm.field('firstName').waitScrollClick();
 
         // await expect(emailValidationErrorMessage).toBeDisplayed();
-        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).toBeDisplayed();
+        await expect(freeTrialFromPage.freeTrialForm.fieldErrorMessage('email')).toBeDisplayed();
     });
 
     it('Verify Email wrong format validation error message text', async () => {
         const emailValidationErrorMessage = 
             // await $('//div[@data-test-id="free-trial-form"]//div[@data-test-id="email-field-error-message"]');    
         // await expect(emailValidationErrorMessage).toHaveText("Invalid format for email");
-        await expect(freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email')).toHaveText("Invalid format for email");
+        await expect(freeTrialFromPage.freeTrialForm.fieldErrorMessage('email')).toHaveText("Invalid format for email");
 
         // const errorMessageFontColor = await emailValidationErrorMessage.execute((element) => {
         //     return window.getComputedStyle(element).color;
         // });
-        const errorMessageFontColor = await freeTrialFromPage.freeTrialForm.getFieldErrorMessage('email').execute((element) => {
+        const errorMessageFontColor = await freeTrialFromPage.freeTrialForm.fieldErrorMessage('email').execute((element) => {
             return window.getComputedStyle(element).color;
         });
         expect(errorMessageFontColor).toEqual('rgb(221, 28, 20)');
@@ -96,7 +96,7 @@ describe('Free Trial form required fields validation', () => {
         // const borderValue = await emailField.execute((element) => {
         //     return window.getComputedStyle(element).border;
         // });
-        const borderValue = await freeTrialFromPage.freeTrialForm.getField('email').execute((element) => {
+        const borderValue = await freeTrialFromPage.freeTrialForm.field('email').execute((element) => {
             return window.getComputedStyle(element).border;
         });
         

@@ -31,11 +31,11 @@ class HeaderComponent {
      */
     getContactsOption(option) {
         const selectors = {
-            howtoget: '//a[@data-test-id="nav-link"][1]',
-            comfortpromise: '//a[@data-test-id="nav-link"][2]',
-            getfreetrial: '//a[@data-test-id="nav-link"][3]',
-            preparefor: '//a[@data-test-id="nav-link"][4]',
-            finddoctor: '//a[@data-test-id="nav-link"][5]'
+            howtoget: '(//a[@data-test-id="nav-link"])[1]',
+            comfortpromise: '(//a[@data-test-id="nav-link"])[2]',
+            getfreetrial: '(//a[@data-test-id="nav-link"])[3]',
+            preparefor: '(//a[@data-test-id="nav-link"])[4]',
+            finddoctor: '(//a[@data-test-id="nav-link"])[5]'
         }
         const selector = selectors[option.toLowerCase()];
         if (!selector) {
