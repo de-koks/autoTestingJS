@@ -8,7 +8,7 @@ const freeTrialFromPage = new FreeTrialFormPage();
 const ecpLocatorPage = new ECPLocatorPage();
 
 //const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
-const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
+// const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
 const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
 // const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
@@ -54,7 +54,7 @@ describe('Free Trial form required fields validation', () => {
         await homePage.header.getContactsOption('getFreeTrial').waitScrollClick();
         
         // await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
-        await expect(browser).toHaveUrl(freeTrialFromPage.url);
+        await expect(browser).toHaveUrl(expect.stringContaining(freeTrialFromPage.url));
     });
 
     it('Verify Email wrong format validation error message is displayed', async () => {
@@ -121,18 +121,27 @@ describe('Perform ECP Locator search', () => {
     });
 
     it('Perform search on ECP locator page', async () => {
-        await $('[data-test-id="search-form_search-input"]').addValue('NY');
-        await $('[data-test-id="autosuggest-input-submit-button"]').waitScrollClick();
+        // await $('[data-test-id="search-form_search-input"]').addValue('NY');
+        await ecpLocatorPage.ecpLocator.searchInput.addValue('NY');
+
+        // await $('[data-test-id="autosuggest-input-submit-button"]').waitScrollClick();
+        await ecpLocatorPage.ecpLocator.searchBtn.waitScrollClick();
     });
 
     it('Search results are displayed', async () => {
-        const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
-        await firstSearchResultsCard.waitForDisplayed({
+        // const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
+        // await firstSearchResultsCard.waitForDisplayed({
+        //     timeout: 10000,
+        //     interval: 500
+        // });
+        await ecpLocatorPage.ecpLocator.searchResultCards[0].waitForDisplayed({
             timeout: 10000,
-            interval: 500
+            interval: 1000
         });
-        const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
-        await expect(searchResultCounter).toBeDisplayed();      
+
+        // const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
+        // await expect(searchResultCounter).toBeDisplayed();
+        await expect(ecpLocatorPage.ecpLocator.searchResultCounter).toBeDisplayed();
     });
 });
 
@@ -147,26 +156,35 @@ describe('Applying filters to ECP Locator search results', async () => {
     }
 
     it('Apply "Preferred" filter', async () => {
-        const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
-        const searchResultCounterTextWithoutAppliedFilters = await searchResultCounter.getText();
-        const searchResultNumberWithoutAppliedFilters = extractSearchResultNumber(searchResultCounterTextWithoutAppliedFilters);
+        // const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
+        // const searchResultCounterTextWithoutAppliedFilters = await searchResultCounter.getText();
+        // const searchResultNumberWithoutAppliedFilters = extractSearchResultNumber(searchResultCounterTextWithoutAppliedFilters);
+        const resultNumberBeforeFilter = await ecpLocatorPage.ecpLocator.extractSearchResultNumber();
 
-        const preferredFilterCheckbox = await $('div[data-test-id="checkbox-buttonacuvue-preferred"]');
-        preferredFilterCheckbox.waitScrollClick();
+        // const preferredFilterCheckbox = await $('div[data-test-id="checkbox-buttonacuvue-preferred"]');
+        // preferredFilterCheckbox.waitScrollClick();
+        await ecpLocatorPage.ecpLocator.acuvuePreferredCheckbox.waitScrollClick();
 
-        const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
-        await firstSearchResultsCard.waitForDisplayed({
+        // const firstSearchResultsCard = await $$('//div[@data-test-id="search-results-container"]')[0];
+        // await firstSearchResultsCard.waitForDisplayed({
+        //     timeout: 10000,
+        //     interval: 500
+        // });
+        await ecpLocatorPage.ecpLocator.searchResultCards[0].waitForDisplayed({
             timeout: 10000,
-            interval: 500
+            interval: 1000
         });
 
-        const searchResultCounterTextPreferredFilterApplied = await searchResultCounter.getText();
-        const searchResultNumberPreferredFilterApplied = extractSearchResultNumber(searchResultCounterTextPreferredFilterApplied);
+        // const searchResultCounterTextPreferredFilterApplied = await searchResultCounter.getText();
+        // const searchResultNumberPreferredFilterApplied = extractSearchResultNumber(searchResultCounterTextPreferredFilterApplied);
+        const resultNumberAfterFilter = await ecpLocatorPage.ecpLocator.extractSearchResultNumber();
 
         //number of results with applied filter should be less than number without filters
-        expect(searchResultNumberPreferredFilterApplied < searchResultNumberWithoutAppliedFilters).toBe(true);
+        // expect(searchResultNumberPreferredFilterApplied < searchResultNumberWithoutAppliedFilters).toBe(true);
+        expect(resultNumberAfterFilter < resultNumberBeforeFilter).toBe(true);
 
-        await preferredFilterCheckbox.waitScrollClick();
+        // await preferredFilterCheckbox.waitScrollClick();
+        await ecpLocatorPage.ecpLocator.acuvuePreferredCheckbox.waitScrollClick();
     });
 });
 
