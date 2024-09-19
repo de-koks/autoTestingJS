@@ -381,6 +381,6 @@ describe('Product detail page', () => {
         // const bannerTitle = await $('[data-test-id="banner-headline"] > span');
         // await expect(bannerTitle).toHaveText(expect.stringContaining(firstProductTitleText));
         await expect(productDetailPage.productHeroBanner.bannerHeadline)
-            .toHaveText(expect.stringContaining(randomProduct[title]), { ignoreCase: true });
+            .toHaveText(expect.stringContaining((await randomProduct).title), { ignoreCase: true });
     });
 });
