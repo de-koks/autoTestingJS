@@ -25,7 +25,7 @@ class FreeTrialFormComponent extends BaseComponent {
         const selector = fields[field.toLowerCase()];
 
         if (!selector) {
-            throw new Error(`No selector found for Get Contacts optio: ${field}`);
+            throw new Error(`No selector found for Free Trial form field: ${field}`);
         }
         return this.rootEl.$(selector);
     }

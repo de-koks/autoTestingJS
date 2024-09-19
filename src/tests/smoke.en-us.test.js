@@ -2,10 +2,16 @@ import { browser, expect } from "@wdio/globals";
 import HomePage from "../po/pages/home.page";
 import FreeTrialFormPage from "../po/pages/freeTrialForm.page";
 import ECPLocatorPage from "../po/pages/ecpLocator.page";
+import ECPDetailPage from "../po/pages/ecpDetail.page";
+import ContactUsPage from "../po/pages/contactUs.page";
+import ComplaintFormPage from "../po/pages/complaintForm.page";
 
 const homePage = new HomePage();
 const freeTrialFromPage = new FreeTrialFormPage();
 const ecpLocatorPage = new ECPLocatorPage();
+const ecpDetailPage = new ECPDetailPage();
+const contactUsPage = new ContactUsPage();
+const complaintFormPage = new ComplaintFormPage();
 
 //const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
 // const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
@@ -147,13 +153,13 @@ describe('Perform ECP Locator search', () => {
 
 describe('Applying filters to ECP Locator search results', async () => {
 
-    function extractSearchResultNumber(searchResultCounterText) {
-        const match = searchResultCounterText.match(/(\d+)\s+Results$/);
-        if (match && match[1]) {
-          return parseInt(match[1], 10);
-        }
-        throw new Error('The text from the search result counter does not match the expected pattern');
-    }
+    // function extractSearchResultNumber(searchResultCounterText) {
+    //     const match = searchResultCounterText.match(/(\d+)\s+Results$/);
+    //     if (match && match[1]) {
+    //       return parseInt(match[1], 10);
+    //     }
+    //     throw new Error('The text from the search result counter does not match the expected pattern');
+    // }
 
     it('Apply "Preferred" filter', async () => {
         // const searchResultCounter = await $('div[data-test-id="search-results_results-count"]');
@@ -190,27 +196,40 @@ describe('Applying filters to ECP Locator search results', async () => {
 
 describe('ECP Detail page', () => {
     it('Navigate to ECP Detail page, verify clinic title', async () => {
-        const firstClinicTitleElement = await $('(//h4[@data-test-id="search-result_title"])[1]');
-        const firstClinicTitle = await firstClinicTitleElement.getText();
+        // const firstClinicTitleElement = await $('(//h4[@data-test-id="search-result_title"])[1]');
+        // const firstClinicTitle = await firstClinicTitleElement.getText();
+        // const searchResultClinicTitle = await ecpLocatorPage.ecpLocator.searchResultTitles[0];
 
-        await firstClinicTitleElement.waitScrollClick();
+        // await firstClinicTitleElement.waitScrollClick();
+        // await searchResultClinicTitle.waitScrollClick();
+        const firstClinicTitle = await ecpLocatorPage.ecpLocator.searchResultTitles[0].getText();
+        await ecpLocatorPage.ecpLocator.searchResultTitles[0].waitScrollClick();
 
-        await browser.waitUntil( async () => await $('div[data-test-id="ecp-details-section"]').isDisplayed(),
-            { timeout: 5000, interval: 500, timeoutMsg: "ECP details section was not loaded" }
+        // await browser.waitUntil( async () => await $('div[data-test-id="ecp-details-section"]').isDisplayed(),
+        //     { timeout: 5000, interval: 500, timeoutMsg: "ECP details section was not loaded" }
+        // );
+        await browser.waitUntil( async () => await ecpDetailPage.ecpDetails.rootEl.isDisplayed(),
+        { timeout: 5000, interval: 500, timeoutMsg: "ECP details section was not loaded" }
         );
         
-        const ecpDetailClinicTitleElement = await $('h3[data-test-id="ecp-details-info-section-title"]>*');
-        await expect(ecpDetailClinicTitleElement).toHaveText(firstClinicTitle);
+        // const ecpDetailClinicTitleElement = await $('h3[data-test-id="ecp-details-info-section-title"]>*');
+        // await expect(ecpDetailClinicTitleElement).toHaveText(firstClinicTitle);
+        await expect(ecpDetailPage.ecpDetails.ecpTitle).toHaveText(firstClinicTitle);
 
-        const ecpDetailCliniTitleFontSize = await ecpDetailClinicTitleElement.execute((element) => {
+        // const ecpDetailCliniTitleFontSize = await ecpDetailClinicTitleElement.execute((element) => {
+        //     return window.getComputedStyle(element).fontSize;
+        // });
+        const ecpTitleFontSize = await ecpDetailPage.ecpDetails.ecpTitle.execute((element) => {
             return window.getComputedStyle(element).fontSize;
         });
         
-        expect(ecpDetailCliniTitleFontSize).toEqual('28px');
+        // expect(ecpDetailCliniTitleFontSize).toEqual('28px');
+        expect(ecpTitleFontSize).toEqual('28px');
     });
 
     it('Get Directions provides with a Google maps route', async () => {
-        await $('a[data-test-id="get-directions"]').waitScrollClick();
+        // await $('a[data-test-id="get-directions"]').waitScrollClick();
+        await ecpDetailPage.ecpDetails.getDirectionsLink.waitScrollClick();
         
         const handles = await browser.getWindowHandles();
         expect(handles.length).toEqual(2);
@@ -236,49 +255,76 @@ describe('Step 1 of Complaint form saves inputted data', () => {
     const zipCode = '12345'; 
     
     it('Navigate to Complaint form', async () => {
-        await $('//*[@data-test-id="nav-link"]/*[text()="Contact Us"]').waitScrollClick();
-        await $('//*[@data-test-id="link"]/*[text()="Complaint"]').waitScrollClick();
+        // await $('//*[@data-test-id="nav-link"]/*[text()="Contact Us"]').waitScrollClick();
+        await ecpDetailPage.footer.helpAndCareColumnLink('contactUs').waitScrollClick();
+        expect(browser).toHaveUrl(expect.stringContaining(contactUsPage.url));
+
+        // await $('//*[@data-test-id="link"]/*[text()="Complaint"]').waitScrollClick();
+        await contactUsPage.complaintLink.waitScrollClick();
+        expect(browser).toHaveUrl(expect.stringContaining(complaintFormPage.url));
     });
 
     it('Fill out fields on Complaint form Step 1', async () => {
-        await $('input[data-test-id="firstName"').addValue(firstName);
-        await $('input[data-test-id="lastName"').addValue(lastName);
-        await $('input[data-test-id="email"').addValue(email);
-        await $('input[data-test-id="phone"').addValue(phone);
-        await $('input[data-test-id="addressOne"').addValue(addressOne);
-        await $('input[data-test-id="addressTwo"').addValue(addressTwo);
-        await $('input[data-test-id="city"').addValue(city);
-        await $('input[data-test-id="zipCode"').addValue(zipCode);
+        // await $('input[data-test-id="firstName"').addValue(firstName);
+        await complaintFormPage.complaintForm.stepOneField('firstName').addValue(firstName);
+        // await $('input[data-test-id="lastName"').addValue(lastName);
+        await complaintFormPage.complaintForm.stepOneField('lastName').addValue(lastName);
+        // await $('input[data-test-id="email"').addValue(email);
+        await complaintFormPage.complaintForm.stepOneField('email').addValue(email);
+        // await $('input[data-test-id="phone"').addValue(phone);
+        await complaintFormPage.complaintForm.stepOneField('phone').addValue(phone);
+        // await $('input[data-test-id="addressOne"').addValue(addressOne);
+        await complaintFormPage.complaintForm.stepOneField('addressOne').addValue(addressOne);
+        // await $('input[data-test-id="addressTwo"').addValue(addressTwo);
+        await complaintFormPage.complaintForm.stepOneField('addressTwo').addValue(addressTwo);
+        // await $('input[data-test-id="city"').addValue(city);
+        await complaintFormPage.complaintForm.stepOneField('city').addValue(city);
+        // await $('input[data-test-id="zipCode"').addValue(zipCode);
+        await complaintFormPage.complaintForm.stepOneField('zipCode').addValue(zipCode);
 
-        await $('[data-test-id="complaint-form"] [data-test-id="country"]').waitScrollClick();
-        await $('[data-test-id="complaint-form"] [data-test-id="dropdown-option-0"]').waitScrollClick();
+        // await $('[data-test-id="complaint-form"] [data-test-id="country"]').waitScrollClick();
+        // await $('[data-test-id="complaint-form"] [data-test-id="dropdown-option-0"]').waitScrollClick();
+        await complaintFormPage.complaintForm.selectRandomCountry();
     });
 
     it('Navigate to Step 2', async () => {
-        await $('[data-test-id="complaint-form"] [data-test-id="next"]').waitScrollClick();
+        // await $('[data-test-id="complaint-form"] [data-test-id="next"]').waitScrollClick();
+        await complaintFormPage.complaintForm.nextBtn.waitScrollClick();
 
-        const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
-        await expect(stepTwoTittle).toHaveText('Step 2: Detailed Information');
+        // const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
+        // await expect(stepTwoTittle).toHaveText('Step 2: Detailed Information');
+        await expect(complaintFormPage.complaintForm.formTitle).toHaveText('Step 2: Detailed Information');
     });
 
     it('Return to step 1 and verify inputted data is saved', async () => {
-        await $('[data-test-id="complaint-form"] [data-test-id="back"]').waitScrollClick();
+        // await $('[data-test-id="complaint-form"] [data-test-id="back"]').waitScrollClick();
+        await complaintFormPage.complaintForm.backBtn.waitScrollClick();
 
-        const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
-        await expect(stepTwoTittle).toHaveText('Step 1: Contact Information');
+        // const stepTwoTittle = await $('[data-test-id="complaint-form"] [data-test-id="common-header-title"] span');
+        // await expect(stepTwoTittle).toHaveText('Step 1: Contact Information');
+        await expect(complaintFormPage.complaintForm.formTitle).toHaveText('Step 1: Contact Information');
 
-        await expect($('input[data-test-id="firstName"')).toHaveValue(firstName);
-        await expect($('input[data-test-id="lastName"')).toHaveValue(lastName);
-        await expect($('input[data-test-id="email"')).toHaveValue(email);
+        // await expect($('input[data-test-id="firstName"')).toHaveValue(firstName);
+        await expect(complaintFormPage.complaintForm.stepOneField('firstName')).toHaveValue(firstName);
+        // await expect($('input[data-test-id="lastName"')).toHaveValue(lastName);
+        await expect(complaintFormPage.complaintForm.stepOneField('lastName')).toHaveValue(lastName);
+        // await expect($('input[data-test-id="email"')).toHaveValue(email);
+        await expect(complaintFormPage.complaintForm.stepOneField('email')).toHaveValue(email);
 
-        const phoneInputValue = await $('input[data-test-id="phone"]').getValue();
-        const phoneWithoutMask = phoneInputValue.replace(/\D/g, '');
+        // const phoneInputValue = await $('input[data-test-id="phone"]').getValue();
+        const phoneWithMask = await complaintFormPage.complaintForm.stepOneField('phone').getValue();
+        // const phoneWithoutMask = phoneInputValue.replace(/\D/g, '');
+        const phoneWithoutMask = phoneWithMask.replace(/\D/g, '');
         expect(phoneWithoutMask).toEqual(phone);
 
-        await expect($('input[data-test-id="addressOne"')).toHaveValue(addressOne);
-        await expect($('input[data-test-id="addressTwo"')).toHaveValue(addressTwo);
-        await expect($('input[data-test-id="city"')).toHaveValue(city);
-        await expect($('input[data-test-id="zipCode"')).toHaveValue(zipCode);
+        // await expect($('input[data-test-id="addressOne"')).toHaveValue(addressOne);
+        await expect(complaintFormPage.complaintForm.stepOneField('addressOne')).toHaveValue(addressOne);
+        // await expect($('input[data-test-id="addressTwo"')).toHaveValue(addressTwo);
+        await expect(complaintFormPage.complaintForm.stepOneField('addressTwo')).toHaveValue(addressTwo);
+        // await expect($('input[data-test-id="city"')).toHaveValue(city);
+        await expect(complaintFormPage.complaintForm.stepOneField('city')).toHaveValue(city);
+        // await expect($('input[data-test-id="zipCode"')).toHaveValue(zipCode);
+        await expect(complaintFormPage.complaintForm.stepOneField('zipCode')).toHaveValue(zipCode);
     });
 });
 

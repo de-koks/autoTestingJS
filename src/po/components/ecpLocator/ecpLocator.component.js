@@ -13,6 +13,9 @@ class ECPLocatorComponent extends BaseComponent {
     get searchResultCards() {
         return this.rootEl.$$('//div[@data-test-id="search-results-container"]');
     }
+    get searchResultTitles() {
+        return this.rootEl.$$('//h4[@data-test-id="search-result_title"]');
+    }
     get searchResultCounter() {
         return this.rootEl.$('div[data-test-id="search-results_results-count"]');
     }

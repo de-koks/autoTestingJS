@@ -3,7 +3,7 @@ import BasePage from "./base.page";
 
 class ECPLocatorPage extends BasePage {
     constructor() {
-        super('/get-contacts/find-an-eye-doctor/');
+        super('/get-contacts/find-an-eye-doctor');
         this.ecpLocator = new ECPLocatorComponent();
     }
 }
