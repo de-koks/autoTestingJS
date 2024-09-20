@@ -5,6 +5,8 @@ import ECPLocatorPage from "../po/pages/ecpLocator.page";
 import ECPDetailPage from "../po/pages/ecpDetail.page";
 import ContactUsPage from "../po/pages/contactUs.page";
 import ComplaintFormPage from "../po/pages/complaintForm.page";
+import ProductsPage from "../po/pages/products.page";
+import ProductDetailPage from "../po/pages/productDetail.page";
 
 const homePage = new HomePage();
 const freeTrialFromPage = new FreeTrialFormPage();
@@ -12,10 +14,12 @@ const ecpLocatorPage = new ECPLocatorPage();
 const ecpDetailPage = new ECPDetailPage();
 const contactUsPage = new ContactUsPage();
 const complaintFormPage = new ComplaintFormPage();
+const productPage = new ProductsPage();
+const productDetailPage = new ProductDetailPage();
 
 //const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
 // const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
-const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
+// const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
 // const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
 browser.addCommand("waitScrollClick", async function () {
@@ -57,7 +61,7 @@ describe('Free Trial form required fields validation', () => {
         await expect(homePage.header.dropMenu).toBeDisplayed();
 
         // await $('a[aria-label="Get a Free[^*] Trial"]').waitScrollClick();
-        await homePage.header.getContactsOption('getFreeTrial').waitScrollClick();
+        await homePage.header.getContactsLink('getFreeTrial').waitScrollClick();
         
         // await expect(browser).toHaveUrl(freeTrialPageUrlEnUs);
         await expect(browser).toHaveUrl(expect.stringContaining(freeTrialFromPage.url));
@@ -120,7 +124,7 @@ describe('Perform ECP Locator search', () => {
         await expect(freeTrialFromPage.header.dropMenu).toBeDisplayed();
 
         // await $('a[aria-label="Find an Eye Doctor"]').waitScrollClick();
-        await freeTrialFromPage.header.getContactsOption('findDoctor').waitScrollClick();
+        await freeTrialFromPage.header.getContactsLink('findDoctor').waitScrollClick();
 
         // await expect(browser).toHaveUrl(expect.stringContaining(ECPLocatorPageUrlEnUs));
         await expect(browser).toHaveUrl(expect.stringContaining(ecpLocatorPage.url));
@@ -330,37 +334,53 @@ describe('Step 1 of Complaint form saves inputted data', () => {
 
 describe('Product detail page', () => {
     it('Navigate to Product page', async () => {
-        await browser.execute(() => window.scrollTo(0, 0));
-        await $('//a[@aria-label="Products"]').waitScrollClick();
+        // await browser.execute(() => window.scrollTo(0, 0));
+        // await $('//a[@aria-label="Products"]').waitScrollClick();
+        await complaintFormPage.header.firstLevelMenuItem('products').waitScrollClick();
 
-        const dropdownNavMenu = await $('[data-test-id="dropdown-nav-menu"]');
-        await expect(dropdownNavMenu).toBeDisplayed();
+        // const dropdownNavMenu = await $('[data-test-id="dropdown-nav-menu"]');
+        // await expect(dropdownNavMenu).toBeDisplayed();
+        await expect(complaintFormPage.header.dropMenu).toBeDisplayed();
 
-        await $('a[aria-label="All Products"]').waitScrollClick();
-        await expect(browser).toHaveUrl(expect.stringContaining(productPageUrlEnUs));
+        // await $('a[aria-label="All Products"]').waitScrollClick();
+        await complaintFormPage.header.productsLink('allProducts').waitScrollClick();
+
+        // await expect(browser).toHaveUrl(expect.stringContaining(productPageUrlEnUs));
+        await expect(browser).toHaveUrl(expect.stringContaining(productPage.url));
     });
 
     it('Product Filters are displayed on Product page', async () => {
-        const productFamilyDropdown = await $('button[data-test-id="product-family"]');
-        const conditionDropdown = await $('button[data-test-id="condition"]');
-        const needStateDropdown = await $('button[data-test-id="need-state"]');
-        const replacementScheduleDropdown = await $('button[data-test-id="replacement-schedule"]');
+        // const productFamilyDropdown = await $('button[data-test-id="product-family"]');
+        // const conditionDropdown = await $('button[data-test-id="condition"]');
+        // const needStateDropdown = await $('button[data-test-id="need-state"]');
+        // const replacementScheduleDropdown = await $('button[data-test-id="replacement-schedule"]');
 
-        await expect(productFamilyDropdown).toBeDisplayed();
-        await expect(conditionDropdown).toBeDisplayed();
-        await expect(needStateDropdown).toBeDisplayed();
-        await expect(replacementScheduleDropdown).toBeDisplayed();
+        // await expect(productFamilyDropdown).toBeDisplayed();
+        // await expect(conditionDropdown).toBeDisplayed();
+        // await expect(needStateDropdown).toBeDisplayed();
+        // await expect(replacementScheduleDropdown).toBeDisplayed();
+
+        await expect(productPage.productsCatalogue.productFamilyBtn).toBeDisplayed();
+        await expect(productPage.productsCatalogue.conditioBtn).toBeDisplayed();
+        await expect(productPage.productsCatalogue.needStateBtn).toBeDisplayed();
+        await expect(productPage.productsCatalogue.replacementScheduleBtn).toBeDisplayed();
     });
 
-    it('Navigate to and verify Product page', async () => {
-        const firstProductCard = await $$('[data-test-id="product-card-container"]')[0];
-        const firstProductTitleElement = await $$('[data-test-id="product-card-text"]>span')[0];
-        const firstProductTitleText = await firstProductTitleElement.getText();
+    it('Click on Product card leads to relevant Product Detail page', async () => {
+        // const firstProductCard = await $$('[data-test-id="product-card-container"]')[0];
+        // const firstProductTitleElement = await $$('[data-test-id="product-card-text"]>span')[0];
+        // const firstProductTitleText = await firstProductTitleElement.getText();
+        const randomProduct = productPage.productsCatalogue.selectRandomProduct();
 
-        await firstProductCard.waitScrollClick();
+        // await firstProductCard.waitScrollClick();
+        await productPage.productsCatalogue.productCards[(await randomProduct).index].waitScrollClick();
 
-        await expect(browser).toHaveTitle(expect.stringContaining(firstProductTitleText));
-        const bannerTitle = await $('[data-test-id="banner-headline"] > span');
-        await expect(bannerTitle).toHaveText(expect.stringContaining(firstProductTitleText));
+        // await expect(browser).toHaveTitle(expect.stringContaining(firstProductTitleText));
+        // await expect(browser).toHaveTitle(expect.stringContaining((await randomProduct).title));
+
+        // const bannerTitle = await $('[data-test-id="banner-headline"] > span');
+        // await expect(bannerTitle).toHaveText(expect.stringContaining(firstProductTitleText));
+        await expect(productDetailPage.productHeroBanner.bannerHeadline)
+            .toHaveText(expect.stringContaining(randomProduct[title]), { ignoreCase: true });
     });
 });

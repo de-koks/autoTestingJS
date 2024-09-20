@@ -1,7 +1,10 @@
-class HeaderComponent {
+import BaseComponent from "./base.component";
+
+class HeaderComponent extends BaseComponent {
 
     constructor() {
-        this.dropdownNavMenuSelector = '[data-test-id="dropdown-nav-menu"]';
+        super('//div[@data-test-id="local-navigation-bar"]')
+        this.dropdownNavMenuSelector = '//div[@data-test-id="dropdown-nav-menu"]';
     }
 
     get dropMenu() {
@@ -13,23 +16,39 @@ class HeaderComponent {
      */
     firstLevelMenuItem(menuItem) {
         const selectors = {
-            products: '[data-test-id="first-level-menu-item-0"]',
-            consideringcontacts: '[data-test-id="first-level-menu-item-1"]',
-            wearandcare: '[data-test-id="first-level-menu-item-2"]',
-            eyehealthrecources: '[data-test-id="first-level-menu-item-3"]',
-            getcontacts: '[data-test-id="first-level-menu-item-4"]'
+            products: '//a[@data-test-id="first-level-menu-item-0"]',
+            consideringcontacts: '//a[@data-test-id="first-level-menu-item-1"]',
+            wearandcare: '//a[@data-test-id="first-level-menu-item-2"]',
+            eyehealthrecources: '//a[@data-test-id="first-level-menu-item-3"]',
+            getcontacts: '//a[@data-test-id="first-level-menu-item-4"]'
         };
         const selector = selectors[menuItem.toLowerCase()];
         if (!selector) {
             throw new Error(`No selector found for menu item: ${menuItem}`);
         }
-        return $(selector);
+        return this.rootEl.$(selector);
     }
 
     /**
-     * @param option {'howToGet' | 'comfortPromise' | 'getFreeTrial' | 'prepareFor' | 'findDoctor'}
+     * @param link {'allProducts' | 'productQuiz' | 'typesOfContacts'}
      */
-    getContactsOption(option) {
+    productsLink(link) {
+        const selectors = {
+            allproducts: '(//a[@data-test-id="nav-link"])[1]',
+            productquiz: '(//a[@data-test-id="nav-link"])[2]',
+            typesofcontacts: '(//a[@data-test-id="nav-link"])[3]'
+        }
+        const selector = selectors[link.toLowerCase()];
+        if (!selector) {
+            throw new Error(`No selector found for Products link: ${link}`);
+        }
+        return this.dropMenu.$(selector);
+    }
+
+    /**
+     * @param link {'howToGet' | 'comfortPromise' | 'getFreeTrial' | 'prepareFor' | 'findDoctor'}
+     */
+    getContactsLink(link) {
         const selectors = {
             howtoget: '(//a[@data-test-id="nav-link"])[1]',
             comfortpromise: '(//a[@data-test-id="nav-link"])[2]',
@@ -37,13 +56,12 @@ class HeaderComponent {
             preparefor: '(//a[@data-test-id="nav-link"])[4]',
             finddoctor: '(//a[@data-test-id="nav-link"])[5]'
         }
-        const selector = selectors[option.toLowerCase()];
+        const selector = selectors[link.toLowerCase()];
         if (!selector) {
-            throw new Error(`No selector found for Get Contacts optio: ${option}`);
+            throw new Error(`No selector found for Get Contacts link: ${link}`);
         }
         return this.dropMenu.$(selector);
     }
-    
 }
 
 export default HeaderComponent;
