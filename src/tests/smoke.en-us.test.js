@@ -17,9 +17,9 @@ const complaintFormPage = new ComplaintFormPage();
 const productPage = new ProductsPage();
 const productDetailPage = new ProductDetailPage();
 
-//const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
-//const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
-//const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
+// const homePageUrlEnUs = 'https://www.acuvue.com/en-us/';
+// const ECPLocatorPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/find-an-eye-doctor/';
+// const productPageUrlEnUs = 'https://www.acuvue.com/en-us/products/';
 // const freeTrialPageUrlEnUs = 'https://www.acuvue.com/en-us/get-contacts/free-trial-contact-lenses/';
 
 browser.addCommand("waitScrollClick", async function () {
