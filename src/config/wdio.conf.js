@@ -66,7 +66,7 @@ export const config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     //logLevel: 'info',
-    logLevel: 'debug',
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:

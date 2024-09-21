@@ -15,10 +15,6 @@ class BasePage {
         return this.pageUrl;
     }
 
-    // async open() {
-    //     await browser.url(this.url);
-    // }
-
     open() {
         return browser.url(this.url);
     }
