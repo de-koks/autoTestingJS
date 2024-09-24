@@ -1,8 +1,8 @@
-const { Given, When, Then } = require('@wdio/cucumber-framework');
-const { expect, $ } = require('@wdio/globals')
+import { Given, When, Then } from '@wdio/cucumber-framework';
+import { expect, $ } from '@wdio/globals';
 
-const LoginPage = require('../pageobjects/login.page');
-const SecurePage = require('../pageobjects/secure.page');
+import LoginPage, { login as _login } from '../pageobjects/login.page';
+import { flashAlert } from '../pageobjects/secure.page';
 
 const pages = {
     login: LoginPage
@@ -13,11 +13,11 @@ Given(/^I am on the (\w+) page$/, async (page) => {
 });
 
 When(/^I login with (\w+) and (.+)$/, async (username, password) => {
-    await LoginPage.login(username, password)
+    await _login(username, password)
 });
 
 Then(/^I should see a flash message saying (.*)$/, async (message) => {
-    await expect(SecurePage.flashAlert).toBeExisting();
-    await expect(SecurePage.flashAlert).toHaveText(expect.stringContaining(message));
+    await expect(flashAlert).toBeExisting();
+    await expect(flashAlert).toHaveText(expect.stringContaining(message));
 });
 

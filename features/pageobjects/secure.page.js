@@ -1,5 +1,5 @@
-const { $ } = require('@wdio/globals')
-const Page = require('./page');
+import { $ } from '@wdio/globals';
+import Page from './page';
 
 /**
  * sub page containing specific selectors and methods for a specific page
@@ -13,4 +13,4 @@ class SecurePage extends Page {
     }
 }
 
-module.exports = new SecurePage();
+export default new SecurePage();
