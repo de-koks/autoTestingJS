@@ -11,7 +11,10 @@ function pages(pageName) {
         contactuspage: new ContactUsPage(),
         complaintformpage: new ComplaintFormPage()
     }
-    const page = pageName.toLowerCase();
+    let page = pageName.toLowerCase().replace(/\s+/g, '');
+    if (!page.endsWith('page')) {
+        page += 'page';
+    }
     if (!items[page]) {
         throw new Error(`${pageName} is not specified`);
     }
