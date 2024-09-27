@@ -1,3 +1,10 @@
+/**
+ * 
+ * @param {string} expectedText 
+ * @param {string} actualText 
+ * @param { 'contains' | 'does not contain' | 'is equal to' | 'is not equal to'} compareOption 
+ * @returns 
+ */
 function compareText(expectedText, actualText, compareOption) {
     switch(compareOption) {
         case 'contains':
