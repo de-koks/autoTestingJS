@@ -24,7 +24,7 @@ class ComplaintFormComponent extends BaseComponent {
             city: 'input[data-test-id="city"]',
             zipcode: 'input[data-test-id="zipCode"]'
         }
-        const selector = selectors[field.toLowerCase()];
+        const selector = selectors[field.toLowerCase().replace(/\s+/g, '')];
 
         if (!selector) {
             throw new Error(`No selector found for Complaint Form field: ${field}`);

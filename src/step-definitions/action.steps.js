@@ -22,3 +22,7 @@ When('I close cookie banner', () => {
 When('I click {string} link on {string} page', (linkName, pageName) => {
     return pages(pageName).links(linkName).waitScrollClick();
 });
+
+When('I set {string} value to {string} field on Complaint form Step 1', async (value, field) => {
+    await pages("complaintFormPage").complaintForm.stepOneField(field).addValue(value);
+});
