@@ -20,7 +20,7 @@
     "mochawesome": "^7.1.3"
   },
   "mocha": {
-    "spec": "./*.spec.js",
+    "spec": "./specs/*.spec.js",
     "reporter": "mochawesome"
   }
 
