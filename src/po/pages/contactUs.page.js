@@ -8,13 +8,18 @@ class ContactUsPage extends BasePage {
         return $('//a[@data-test-id="link"]/span[text()="Complaint"]');
     }
 
+    /**
+     * 
+     * @param {'complaint'} linkName 
+     * @returns { complaintFormPageLink }
+     */
     links(linkName) {
         const items = {
             complaint: this.complaintLink
         }
         const link = linkName.toLowerCase();
         if (!items[link]) {
-            throw new Error(`No link on Contact Us page for ${linkName}`);
+            throw new Error(`No link is specified on Contact Us page for ${linkName}`);
         }
         return items[link];
     }

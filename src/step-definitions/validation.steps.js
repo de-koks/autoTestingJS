@@ -4,11 +4,16 @@ import { compareText } from "./utils/compare-text";
 
 
 Then('Current URL corresponds to {string} page', async pageName => {
-    await expect(browser).toHaveUrl(browser.options.baseUrl + pages(pageName).url + '/');
+    await expect(browser).toHaveUrl(browser.options.baseUrl + pages(pageName).url);
 });
 
 Then('Current URL {string} {string} page', async (compareOtion, pageName) => {
     const currentUrl = await browser.getUrl();
     const expectedUrl = browser.options.baseUrl + pages(pageName).url;
     return compareText(expectedUrl, currentUrl, compareOtion);
+});
+
+Then('Complaint Form title {string} {string}', async (compareOtion, expectedTitle) => {
+    const actualTitle = await pages("complaintFormPage").complaintForm.formTitle.getText();
+    return compareText(expectedTitle, actualTitle, compareOtion);
 });

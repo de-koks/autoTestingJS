@@ -26,3 +26,11 @@ When('I click {string} link on {string} page', (linkName, pageName) => {
 When('I set {string} value to {string} field on Complaint form Step 1', async (value, field) => {
     await pages("complaintFormPage").complaintForm.stepOneField(field).addValue(value);
 });
+
+When('I click {string} button on Complaint Form', buttonName => {
+    return pages("complaintFormPage").complaintForm.buttons(buttonName).waitScrollClick();
+});
+
+When('I select random option in {string} dropdown on Complaint Form', async dropdownName => {
+    return pages('complaintFormPage').complaintForm.selectRandomDropdownOption(dropdownName);
+});

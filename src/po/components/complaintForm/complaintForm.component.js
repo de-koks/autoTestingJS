@@ -8,6 +8,29 @@ class ComplaintFormComponent extends BaseComponent {
     get formTitle() {
         return this.rootEl.$('[data-test-id="common-header-title"] span');
     }
+    get nextBtn() {
+        return this.rootEl.$('button[data-test-id="next"]');
+    }
+    get backBtn() {
+        return this.rootEl.$('button[data-test-id="back"]');
+    }
+
+    /**
+     * 
+     * @param { 'next' | 'back' } buttonName 
+     * @returns { nextBtn | backBtn }
+     */
+    buttons(buttonName) {
+        const items = {
+            next: this.nextBtn,
+            back: this.backBtn
+        }
+        const button = buttonName.toLowerCase();
+        if (!items[button]) {
+            throw new Error(`No button is specified on Complaint Form for ${buttonName}`);
+        }
+        return items[button];
+    }
 
     /**
      * @param field {'firstName' | 'lastName' | 'email' | 'phone' | 'addressOne' | 'addressTwo' | 'country' | 'city' | 'zipCode'}
@@ -42,11 +65,20 @@ class ComplaintFormComponent extends BaseComponent {
         await countries[randomIndex].click();
     }
 
-    get nextBtn() {
-        return this.rootEl.$('button[data-test-id="next"]');
-    }
-    get backBtn() {
-        return this.rootEl.$('button[data-test-id="back"]');
+    /**
+     * 
+     * @param { 'country' } dropdownName 
+     * @returns { selectRandomCountry() }
+     */
+    selectRandomDropdownOption(dropdownName) {
+        const items ={
+            country: this.selectRandomCountry()
+        }
+        const dropdown = dropdownName.toLowerCase().replace(/\s+/g, '');
+        if (!items[dropdown]) {
+            throw new Error(`No dropdown is specified on Complaint Form for ${dropdownName}`);
+        }
+        return items[dropdown];
     }
 }
 

@@ -3,7 +3,7 @@ import ComplaintFormPage from "./complaintForm.page";
 
 /**
  * 
- * @param {'contactuspage' | 'complaintFormPage'} pageName 
+ * @param { 'contactUsPage' | 'complaintFormPage' } pageName 
  * @returns { ContactUsPage | ComplaintFormPage }
  */
 function pages(pageName) {
