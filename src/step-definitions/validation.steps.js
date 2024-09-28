@@ -17,3 +17,8 @@ Then('Complaint Form title {string} {string}', async (compareOtion, expectedTitl
     const actualTitle = await pages("complaintFormPage").complaintForm.formTitle.getText();
     return compareText(expectedTitle, actualTitle, compareOtion);
 });
+
+Then('{string} field value {string} {string} on Complaint Form Step 1', async (fieldName, compareOtion, expectedValue) => {
+    const actualValue = await pages('complaintFormPage').complaintForm.stepOneField(fieldName).getValue();
+    return compareText(expectedValue, actualValue, compareOtion);
+});

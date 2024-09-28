@@ -7,7 +7,7 @@ Feature: Input fields on Comlaint Form Step 1 store inputted data when a user re
         Then Current URL "is equal to" "Complaint Form" page
 
     Scenario: Fill in Complaint Form step 1 inputs
-        When I set "<Value>" value to "<Field>" field on Complaint form Step 1
+        When I set "<Value>" value to "<Field>" field on Complaint Form step 1
         Examples:
         | Field       | Value                  |
         | first name  | John                   |
@@ -24,3 +24,16 @@ Feature: Input fields on Comlaint Form Step 1 store inputted data when a user re
         When I click "Next" button on Complaint Form
         Then Complaint Form title "is equal to" "Step 2: Detailed Information"
         When I click "Back" button on Complaint Form
+
+    Scenario: Verify that data is saved on step 1
+        Then "<Field>" field value "is equal to" "<Value>" on Complaint Form Step 1
+        Examples:
+        | Field       | Value                  |
+        | first name  | John                   |
+        | last name   | Doe                    |
+        | email       | example@email.com      |
+        | phone       | (123) 456-7890         |
+        | address one | 4358 Quiet Valley Lane |
+        | address two | 270 Hannah Street      |
+        | city        | New York               |
+        | zip code    | 12345                  |
