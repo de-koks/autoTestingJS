@@ -21,4 +21,7 @@ The test from gui_test are completely rewritten implementing the page object mod
 # bdd_gui_tests
 A Webdriver IO with Cucumber framework is set up. Several steps of domain specific language are implemented for a few tests from pom branch.
 
+# api_tests
+A framework with Mocha, axios and chai with API tests.
+
 There are more detailed READMEs in each branch.
