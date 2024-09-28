@@ -3,7 +3,7 @@ import BasePage from "./base.page";
 
 class ComplaintFormPage extends BasePage {
     constructor() {
-        super('/contact-us/complaint-form');
+        super('contact-us/complaint-form/');
         this.complaintForm = new ComplaintFormComponent();
     }
 }

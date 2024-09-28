@@ -9,6 +9,6 @@ Then('Current URL corresponds to {string} page', async pageName => {
 
 Then('Current URL {string} {string} page', async (compareOtion, pageName) => {
     const currentUrl = await browser.getUrl();
-    const expectedUrl = browser.options.baseUrl + pages(pageName).url + '/'
+    const expectedUrl = browser.options.baseUrl + pages(pageName).url;
     return compareText(expectedUrl, currentUrl, compareOtion);
 });
