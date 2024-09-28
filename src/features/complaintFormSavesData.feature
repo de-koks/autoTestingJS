@@ -6,7 +6,7 @@ Feature: Input fields on Comlaint Form Step 1 store inputted data when a user re
         When I click "Complaint" link on "Contact Us" page
         Then Current URL "is equal to" "Complaint Form" page
 
-    Scenario: Fill in Complaint Form inputs
+    Scenario: Fill in Complaint Form step 1 inputs
         When I set "<Value>" value to "<Field>" field on Complaint form Step 1
         Examples:
         | Field       | Value                  |
@@ -19,3 +19,8 @@ Feature: Input fields on Comlaint Form Step 1 store inputted data when a user re
         | city        | New York               |
         | zip code    | 12345                  |
 
+    Scenario: Select country, navigate to step 2 and return to step 1
+        When I select random option in "Country" dropdown on Complaint Form
+        When I click "Next" button on Complaint Form
+        Then Complaint Form title "is equal to" "Step 2: Detailed Information"
+        When I click "Back" button on Complaint Form
