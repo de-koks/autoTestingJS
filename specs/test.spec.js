@@ -69,8 +69,8 @@ describe('Negative API test suit', () => {
         expect(response.status).to.equal(404);
     });
 
-    it('PATCH with invalid data returns 404 for posts4', async () => {
-        const testData = readJson(invalidDataPath);
+    it('PATCH returns 404 for posts4', async () => {
+        const testData = readJson(patchDataPath);
         const response = await sendRequest('posts4', testData, 'patch');
         expect(response.status).to.equal(404);
     });
