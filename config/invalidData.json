@@ -1,0 +1,5 @@
+{
+    "id": true,
+    "header": "footer",
+    "script": "console.log('123');"
+}
