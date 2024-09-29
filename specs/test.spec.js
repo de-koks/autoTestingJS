@@ -34,7 +34,7 @@ describe('Positive API test suit', () => {
         // expect(response.data.title).to.equal("For those about to rock");
     });
 
-    it('Patching - PATCH post/4', async () => {
+    it('Patching - PATCH posts/4', async () => {
         const testData = readJson(patchDataPath);
         const response = await sendRequest('posts/4', testData, 'patch');
         // console.log(response.data);
@@ -43,4 +43,8 @@ describe('Positive API test suit', () => {
         expect(response.data.title).to.equal("eum et est occaecati");
     });
 
+    it('Deleting - DELETE posts/5', async () => {
+        const response = await sendRequest('posts/5', null, 'delete');
+        expect(response.status).to.equal(200);
+    });
 });
