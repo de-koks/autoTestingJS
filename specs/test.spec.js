@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { sendRequest } from "../helpers/api.helper.js";
-import testData from '../config/data.json' assert { type: 'json' };
+import { readJson } from "../config/readJson.js";
 
 describe('API test suit', () => {
 
@@ -11,6 +11,7 @@ describe('API test suit', () => {
     });
 
     it('POST posts', async () => {
+        const testData = readJson('./config/data.json');
         const response = await sendRequest('posts', testData, 'post');
         expect(response.status).to.equal(201);
     });
