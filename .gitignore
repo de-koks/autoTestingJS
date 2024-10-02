@@ -1,9 +1,12 @@
 .idea
 .vscode
+.DS_Store
 
 **/coverage
 **/mochawesome-report
+**/allure-results
 **/artifacts
 **/report
 **/node_modules
 **/lib
+**/screenshots
