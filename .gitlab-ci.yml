@@ -1,0 +1,43 @@
+# Use official Node.js image.
+image: node:20
+
+# Define stages for the pipeline.
+stages:
+  - unit tests
+  - API tests
+
+
+# Cache node_modules to speed up builds.
+cache:
+  paths:
+    - node_modules/
+
+
+# unit tests Job Configuration
+unit tests:
+  stage: unit tests
+  script:
+    - npm install
+    - npm run lint
+    - npm test
+    - npm run coverage
+  only:
+    - unit_tests # Run this job only on the unit_tests branch
+  artifacts:
+    paths:
+      - mochawesome-report/ # Directory containing mochawesome reports
+      - coverage/ # Directory containing coverage reports
+
+
+# API tests Job Configuration
+API tests:
+  stage: API tests
+  script:
+    - npm install
+    - npm test # Running tests
+  artifacts:
+    when: always
+    paths:
+      - mochawesome-report/ # Directory containing mochawesome reports
+  only:
+    - api_tests # Run this job only on the api_tests branch
