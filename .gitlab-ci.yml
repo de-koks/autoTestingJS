@@ -3,8 +3,8 @@ image: node:20
 
 # Define stages for the pipeline.
 stages:
-  - unit tests
-  - API tests
+  - unit_tests
+  - API_tests
 
 
 # Cache node_modules to speed up builds.
@@ -14,8 +14,8 @@ cache:
 
 
 # unit tests Job Configuration
-unit tests:
-  stage: unit tests
+unit_tests:
+  stage: unit_tests
   script:
     - npm install
     - npm run lint
@@ -30,8 +30,8 @@ unit tests:
 
 
 # API tests Job Configuration
-API tests:
-  stage: API tests
+API_tests:
+  stage: API_tests
   script:
     - npm install
     - npm test # Running tests
